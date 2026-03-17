@@ -19,7 +19,7 @@ def index():
 	if request.method == "POST":
 		accion = request.form.get("accion")
 
-		if accion == "agregar":
+		if accion == "agregar" and pizza_form.validate() and pedido_form.validate():
 			ingredientes = sorted(pizza_form.ingredientes.data)
 			lista_i = ",".join(ingredientes)
 			pizza = DetalleTemporal.query.filter_by(
@@ -57,7 +57,7 @@ def index():
 				
 			db.session.commit()
 			flash("Pizza agregada correctamente", "success")
-		elif accion == "terminar":
+		elif accion == "terminar" and pedido_form.validate():
 
 			c = Clientes(
 				nombre = pedido_form.nombre.data,
@@ -122,11 +122,13 @@ def index():
 			flash("Pedido realizado correctamente", "success")
 
 			return redirect(url_for('ventas.index'))
-		else:
+		elif accion.isnumeric():
 			dt = db.session.query(DetalleTemporal).filter(DetalleTemporal.id_detalle == int(accion)).first()
 			db.session.delete(dt)
 			db.session.commit()
 			flash("Pizza eliminada correctamente", "success")
+		else:
+			flash("Porfavor introduzca los datos necesarios", "error")
 
 		pizza_form = forms.PizzaForm()
 		detalles = DetalleTemporal.query.all()
