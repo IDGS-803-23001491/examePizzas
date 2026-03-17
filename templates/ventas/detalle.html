@@ -1,0 +1,105 @@
+{% extends "layout.html" %}
+{% block container %}
+<div class="space-y-6">
+    <div class="bg-neutral-primary-soft w-full p-6 border border-default rounded-base shadow-xs">
+        <h5 class="mb-3 text-2xl font-semibold tracking-tight text-heading leading-8">
+            Datos de la venta
+        </h5>
+        <div class="relative overflow-x-auto bg-neutral-primary-soft shadow-xs rounded-base border border-default">
+            <table class="w-full text-sm text-left rtl:text-right text-body">
+                <thead class="text-sm text-body bg-neutral-secondary-soft border-b rounded-base border-default">
+                    <tr>
+                        <th scope="col" class="px-6 py-3 font-medium">
+                            Cliente
+                        </th>
+                        <th scope="col" class="px-6 py-3 font-medium">
+                            Direccion
+                        </th>
+                        <th scope="col" class="px-6 py-3 font-medium">
+                            Telefono
+                        </th>
+                        <th scope="col" class="px-6 py-3 font-medium">
+                            Fecha
+                        </th>
+                        <th scope="col" class="px-6 py-3 font-medium">
+                            Total
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="bg-neutral-primary border-b border-default">
+                        <th scope="row" class="px-6 py-4 font-medium text-heading whitespace-nowrap">
+                            {{ pedido.cliente.nombre }}
+                        </th>
+                        <td class="px-6 py-4">
+                            {{ pedido.cliente.direccion }}
+                        </td>
+                        <td class="px-6 py-4">
+                            {{ pedido.cliente.telefono }}
+                        </td>
+                        <td class="px-6 py-4">
+                            {{ pedido.fecha }}
+                        </td>
+                        <td class="px-6 py-4">
+                            $ {{ pedido.precio }}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="bg-neutral-primary-soft w-full p-6 border border-default rounded-base shadow-xs">
+        <h5 class="mb-3 text-2xl font-semibold tracking-tight text-heading leading-8">
+            Detalles del pedido
+        </h5>
+        <div class="relative overflow-x-auto bg-neutral-primary-soft shadow-xs rounded-base border border-default">
+            <table class="w-full text-sm text-left rtl:text-right text-body">
+                <thead class="text-sm text-body bg-neutral-secondary-soft border-b rounded-base border-default">
+                    <tr>
+                        <th scope="col" class="px-6 py-3 font-medium">
+                            Pizza
+                        </th>
+                        <th scope="col" class="px-6 py-3 font-medium">
+                            Ingredientes
+                        </th>
+                        <th scope="col" class="px-6 py-3 font-medium">
+                            Precio
+                        </th>
+                        <th scope="col" class="px-6 py-3 font-medium">
+                            Cantidad
+                        </th>
+                        <th scope="col" class="px-6 py-3 font-medium">
+                            Subtotal
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {%for p in pedido.detalles %}
+                    <tr class="bg-neutral-primary border-b border-default">
+                        <th scope="row" class="px-6 py-4 font-medium text-heading whitespace-nowrap">
+                            {{ p.pizza.tamano }}
+                        </th>
+                        <th scope="row" class="px-6 py-4 font-medium text-heading whitespace-nowrap">
+                            {% if p.pizza.ingredientes %}
+                                {{ p.pizza.ingredientes }}
+                            {% else %}
+                                Puro Chorizo
+                            {% endif %}
+                        </th>
+                        <td class="px-6 py-4">
+                            $ {{ p.pizza.precio }}
+                        </td>
+                        <td class="px-6 py-4">
+                            {{ p.cantidad }}
+                        </td>
+                        <td class="px-6 py-4">
+                            $ {{ p.subtotal }}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

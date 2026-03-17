@@ -1,0 +1,91 @@
+{% extends "layout.html" %}
+{% block container %}
+
+{% import "_macros.html" as macros %}
+
+<form action="" method="POST" class="max-w-5xl mx-auto space-y-6" novalidate>
+    {{ form.csrf_token }}
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <div class="grid grid-cols-3 gap-6 items-end">
+        <div class="col-span-2">
+            {% if form.dia.data != -1 %}
+            {{ macros.camposNuevos(form.dia, class="bg-neutral-secondary-medium border
+            border-default-medium text-heading
+            text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs
+            placeholder:text-body")
+            }}
+            {% else %}
+            {{ macros.camposNuevos(form.mes, class="bg-neutral-secondary-medium border
+            border-default-medium text-heading
+            text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs
+            placeholder:text-body")
+            }}
+            {% endif %}
+        </div>
+        <div>
+            <button type="submit" name="accion" value="agregar"
+                class="text-white bg-brand box-border border border-transparent hover:bg-brand-strong p-5 focus:ring-4 focus:ring-brand-medium shadow-xs font-medium leading-5 rounded-base text-sm px-5 py-2 focus:outline-none inline-flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="size-6">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                </svg>
+                <span class="w-full">Buscar</span>
+            </button>
+        </div>
+    </div>
+    <div>
+        <div class="bg-neutral-primary-soft block max-w-sm p-6 border border-default rounded-base shadow-xs">
+            <h5 class="mb-3 text-2xl font-semibold tracking-tight text-heading leading-8">
+                {% if form.dia.data != -1 %}
+                Ventas del dia
+                {% else %}
+                Ventas del mes
+                {% endif %}
+            </h5>
+            <div class="relative overflow-x-auto bg-neutral-primary-soft shadow-xs rounded-base border border-default">
+                <table class="w-full text-sm text-left rtl:text-right text-body">
+                    <thead class="text-sm text-body bg-neutral-secondary-soft border-b rounded-base border-default">
+                        <tr>
+                            <th scope="col" class="px-6 py-3 font-medium">
+                                Cliente
+                            </th>
+                            <th scope="col" class="px-6 py-3 font-medium">
+                                Total
+                            </th>
+                            <th scope="col" class="px-6 py-3 font-medium">
+                                Detalles
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {%for p in pedidos %}
+                        <tr class="bg-neutral-primary border-b border-default">
+                            <th scope="row" class="px-6 py-4 font-medium text-heading whitespace-nowrap">
+                                {{ p.cliente.nombre }}
+                            </th>
+                            <td class="px-6 py-4">
+                                $ {{ p.precio }}
+                            </td>
+                            <td class="px-6 py-4">
+                                <a href="/ventas/detalle?id={{ p.id_pedido }}"
+                                    class="inline-flex items-center text-white justify-center p-5 text-base font-medium border border-transparent hover:border-transparent-medium text-body rounded-base bg-dark hover:bg-dark-strong px-4 py-2.5">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                        stroke-width="1.5" stroke="currentColor" class="size-6">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                    </svg>
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <p class="text-body p-4">Total: ${{total}}</p>
+            </div>
+        </div>
+    </div>
+</form>
+{% endblock %}
